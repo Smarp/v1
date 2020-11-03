@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Smarp API Reference</title>
+    <!-- needed for adaptive design -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" rel="stylesheet">
+    <!--
+    ReDoc uses font options from the parent element
+    So override default browser styles
+    -->
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    
+  </head>
+  <body>
+    <div id="redoc_container"></div>
+    <script src="https://cdn.jsdelivr.net/npm/redoc/bundles/redoc.standalone.js"></script>
+    <script>
+      Redoc.init(
+        './openapi.json',
+        {"hideDownloadButton":true,"theme":{"logo":{"gutter":"20px"},"colors":{"primary":{"main":"#F86252"},"text":{"primary":"#3C3C3C"}},"fontFamily":"Open Sans, sans-serif","typography":{"fontFamily":"Open Sans, sans-serif","headings":{"fontWeight":"700"}}}},
+        document.getElementById("redoc_container")
+      );
+    </script>
+  </body>
+</html>
