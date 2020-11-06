@@ -20,6 +20,8 @@ servers:
 tags:
   - name: ping
     description: Check API availability
+  - name: click
+    description: Click endpoints
 paths:
   /ping:
     get:
@@ -34,8 +36,127 @@ paths:
             text/plain:
               schema:
                 type: string
+  /clicks:
+    get:
+      tags:
+        - click
+      summary: Returns clicks generated from the posts shared by users to social media
+      description: |
+        Returns all clicks based on the period in which clicks happened.
+
+        Maximum amount of results per request is 1000
+
+        In order to iterate throughout other results use `next` parameter. The value of `next` could be obtained in the result of request
+
+        Role level required: `Company Admin`
+      security:
+        - access-token: []
+      parameters:
+        - name: from
+          in: query
+          description: Clicks that happened after this time will be returned. Date-time should be in RFC3339 format.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: to
+          in: query
+          description: Clicks that happened at or before that time will be returned. Date-time should be in RFC3339 format.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: next
+          in: query
+          required: false
+          description: Link to the next batch of results
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of clicks.
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/GetClicksResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '403':
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ErrorEnvelope'
 components:
   schemas:
+    ClickItem:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Id of the click
+        createdAt:
+          type: string
+          format: date-time
+          description: Time when the click happened
+        sharerId:
+          type: string
+          description: Id of the user that shared a post which generated the click
+        postId:
+          type: string
+          description: Id of the post that generated the click
+        socialNetwork:
+          description: Name of the social network where the click happened
+          type: string
+      required:
+        - id
+        - createdAt
+        - postId
+        - socialNetwork
+    GetClicksResponse:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            next:
+              type: string
+              description: Link to the next batch of results. Empty in case no more results could be fetched
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClickItem'
+      required:
+        - meta
+        - data
+    ErrorEnvelope:
+      type: object
+      properties:
+        meta:
+          type: object
+        data:
+          type: object
+        error:
+          type: object
+          required:
+            - code
+            - message
+          properties:
+            code:
+              type: string
+              description: Status code
+            message:
+              type: string
+              description: Error message
+      required:
+        - error
     ObjectId:
       type: string
       pattern: '^[0-9a-fA-F]{24}$'
