@@ -1,7 +1,59 @@
 openapi: 3.0.2
 info:
   description: |
-    # Instructions
+    # Versioning
+    ## Definition
+    Smarp supports a multi-version API, which means that multiple versions of our API could be available at the same time for API users.
+
+    Versions are formated as  `v1`, `v2`, ... `vN`.
+
+    ## Breaking changes
+    Each new Major version contains at least one breaking change compared to the previous version,
+    therefore no backward compatibility is guaranteed and adopting a new Major version will require developers’ adjustments to the breaking changes.
+
+    ### Breaking changes include:
+    - Endpoints are removed or renamed
+    - Parameters are removed, renamed or introduce a type change
+    - New rules for request parameters are introduced. For example, when a parameter becomes mandatory
+    - New rules for response parameters are introduced. For example, when a response parameter is omitted when empty, null or 0
+    - Response codes are changed or removed
+
+    ## Non-Breaking changes
+    Non-breaking changes of API can be applied by Smarp at any time to existing versions.
+    Please take this into consideration and refer to our latest documentation when implementing an application that uses Smarp’s API.
+
+    ### Non-breaking changes include:
+    - New endpoints are added
+    - New non-mandatory request parameters are added
+    - New response parameters are added
+    - Bug fixes
+
+    ## Available versions
+      List of avaialble versions:
+      - [v1](  https://smarp.github.io/v1/)
+
+    ## Example
+    Accessing v1 endpoint
+    ```
+    https://smarp.smarpshare.com/api/v1/ping
+    ```
+
+    # Authentication
+    ## Create access token
+    To get an access token, please check if you have `Channel manager`, `Group Admin` or `Company Admin` role (Check your current role by clicking your avatar on the top right-hand corner of the page. Your role is displayed under your name)
+
+    - Access your company domain settings using the following URL `https://{subdomain}.smarpshare.com/#/profile/settings`
+    - Navigate to `Access token` tab on the left-side menu.
+    > If you are `Channel manager`, `Group Admin` or `Company Admin` role but cannot see Access token tab, please contact our support team to enable Access token feature.
+    - If you don't have an access token, please create one by pressing `Create new access token` button. Then give the name for the token that is easier for you to remember.
+
+    ## Using access token
+    - If you already have an access token, press the button with copy icon (next to the token string).
+    - To use an access token, you must put it to HTTP request header `Authorization`. Here is cURL example
+    ```
+    curl --request GET -H "Authorization: Bearer <your-access-token>" https://{subdomain}.smarpshare.com/api/{version}/allowed-access-token-api
+    ```
+    - Any API having `access-token` as `Authorizations` option in this documentation is potentially usable with access token, depending on whether you have the requiste user role permission.
   version: '1'
   title: Smarp API Reference
   contact:
