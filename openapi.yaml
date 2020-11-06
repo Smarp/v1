@@ -2,33 +2,30 @@ openapi: 3.0.2
 info:
   description: |
     # Instructions
-  version: 1.0.0
+  version: '1'
   title: Smarp API Reference
   contact:
     name: Tech Support
     url: 'https://smarp.com/company/#contact-us'
     email: support@smarp.com
-  license:
-    name: Apache-2.0
-    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
   x-logo:
     url: ./img/smarp-logo.png
 servers:
   - url: 'https://{subdomain}.smarpshare.com/api/v1'
-    description: The production V1 API server
+    description: Base domain for API V1
     variables:
       subdomain:
         default: login
         description: this value is assigned by the service provider
 tags:
   - name: ping
-    description: Description of ping API
+    description: Check API availability
 paths:
   /ping:
     get:
       tags:
         - ping
-      summary: Check availability of server API
+      summary: Check API availability
       description: Endpoint for check availability of server
       responses:
         '200':
