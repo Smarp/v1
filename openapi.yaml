@@ -146,6 +146,13 @@ paths:
               schema:
                 type: object
                 $ref: '#/components/schemas/ErrorEnvelope'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ErrorEnvelope'
 components:
   schemas:
     ClickItem:
