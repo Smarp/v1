@@ -72,8 +72,8 @@ servers:
 tags:
   - name: ping
     description: Check API availability
-  - name: click
-    description: Click endpoints
+  - name: clicks
+    description: Clicks endpoints
 paths:
   /ping:
     get:
@@ -91,7 +91,7 @@ paths:
   /clicks:
     get:
       tags:
-        - click
+        - clicks
       summary: Returns clicks generated from the posts shared by users to social media
       description: |
         Returns all clicks based on the period in which clicks happened.

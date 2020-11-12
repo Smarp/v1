@@ -31,8 +31,8 @@
       "description": "Check API availability"
     },
     {
-      "name": "click",
-      "description": "Click endpoints"
+      "name": "clicks",
+      "description": "Clicks endpoints"
     }
   ],
   "paths": {
@@ -60,7 +60,7 @@
     "/clicks": {
       "get": {
         "tags": [
-          "click"
+          "clicks"
         ],
         "summary": "Returns clicks generated from the posts shared by users to social media",
         "description": "Returns all clicks based on the period in which clicks happened.\n\nMaximum amount of results per request is 1000\n\nIn order to iterate throughout other results use `next` parameter. The value of `next` could be obtained in the result of request\n\nRole level required: `Company Admin`\n",
