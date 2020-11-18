@@ -55,6 +55,30 @@ info:
     ```
     - Any API having `access-token` as `Authorizations` option in this documentation is potentially usable with access token, depending on whether you have the requiste user role permission.
 
+    # Anonymity
+    Some of the endpoints contain User ID or equivalent field in their reponses.
+
+    However, certain records in the responses may omit User ID or equivalent for users who are anonymous on Smarp.
+
+    ## When a user is considered anonymous
+    - A user has chosen to be anonymous in his/her personal settings
+    - A user belongs to a Group that is set to protect its Users from being identified in analytics due to compliance reasons.
+
+    ## Example
+    ```json
+      // UserId is in the response because the user is not anonymised
+      {
+        "UserId": "393c69300000000000000000",
+        "PostId": "263c69300000000000000000"
+      }
+
+      // UserId is not in the response because the user is anonymised
+      {
+        "PostId": "493c69300000000000000000"
+      }
+
+    ```
+
     # Requests and responses
     ## Pagination
 
@@ -171,6 +195,10 @@ paths:
         This Endpoint is a subject of [pagination](#section/Requests-and-responses/Pagination)
 
         Role level required: `Company Admin`
+
+        #### Anonymity
+
+        This endpoint supports user (sharerId) [Anonymity](#section/Anonymity)
       security:
         - access-token: []
       parameters:
