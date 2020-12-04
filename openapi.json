@@ -43,6 +43,10 @@
       "description": "Shares endpoints"
     },
     {
+      "name": "groups",
+      "description": "Groups endpoints"
+    },
+    {
       "name": "teams",
       "description": "Teams endpoints"
     }
@@ -375,6 +379,77 @@
         }
       }
     },
+    "/groups": {
+      "get": {
+        "tags": [
+          "groups"
+        ],
+        "summary": "Returns groups",
+        "description": "Returns all groups within instance\n",
+        "security": [
+          {
+            "access-token": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of groups.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/GetGroupsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Unauthorized request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "439": {
+            "description": "Quota of API requests was reached",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/teams": {
       "get": {
         "tags": [
@@ -460,6 +535,40 @@
   },
   "components": {
     "schemas": {
+      "GroupItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Id of the group"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the group"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ]
+      },
+      "GetGroupsResponse": {
+        "type": "object",
+        "properties": {
+          "meta": {
+            "type": "object"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GroupItem"
+            }
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
       "ClickItem": {
         "type": "object",
         "properties": {
@@ -604,20 +713,20 @@
             "type": "string"
           },
           "uniqueClickCount": {
-            "description": "Total count of uniques clicks on social media",
-            "type": "ineteger"
+            "description": "Total number of uniques clicks on social media",
+            "type": "integer"
           },
           "likeCount": {
-            "description": "Total count of likes on social media",
-            "type": "ineteger"
+            "description": "Total number of likes on social media",
+            "type": "integer"
           },
           "commentCount": {
-            "description": "Total count of comments on social media",
-            "type": "ineteger"
+            "description": "Total number of comments on social media",
+            "type": "integer"
           },
           "reshareCount": {
-            "description": "Total count of re-shares on social media",
-            "type": "ineteger"
+            "description": "Total number of re-shares on social media",
+            "type": "integer"
           }
         },
         "required": [
