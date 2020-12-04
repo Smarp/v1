@@ -172,6 +172,8 @@ tags:
     description: Posts endpoints
   - name: shares
     description: Shares endpoints
+  - name: teams
+    description: Teams endpoints
 paths:
   /ping:
     get:
@@ -407,6 +409,62 @@ paths:
               schema:
                 type: object
                 $ref: '#/components/schemas/ErrorEnvelope'
+  /teams:
+    get:
+      tags:
+        - teams
+      summary: Returns teams
+      description: |
+        Returns all teams in the instance.
+
+        This Endpoint is a subject of [pagination](#section/Requests-and-responses/Pagination)
+
+        Role level required: `Company Admin`
+      security:
+        - access-token: []
+      parameters:
+        - name: next
+          in: query
+          required: false
+          description: Link to the next batch of results
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of teams.
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/GetTeamsResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '403':
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '439':
+          description: Quota of API requests was reached
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ErrorEnvelope'
 components:
   schemas:
     ClickItem:
@@ -548,6 +606,38 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ShareItem'
+      required:
+        - meta
+        - data
+    TeamItem:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Id of the team
+        name:
+          type: string
+          description: Name of the team
+        groupId:
+          type: string
+          description: ID of the Group that the team belongs to
+      required:
+        - id
+        - name
+        - groupId
+    GetTeamsResponse:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            next:
+              type: string
+              description: Link to the next batch of results. Empty in case no more results could be fetched
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeamItem'
       required:
         - meta
         - data
