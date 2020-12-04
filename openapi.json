@@ -43,6 +43,10 @@
       "description": "Shares endpoints"
     },
     {
+      "name": "users",
+      "description": "Users endpoints"
+    },
+    {
       "name": "groups",
       "description": "Groups endpoints"
     },
@@ -328,6 +332,88 @@
                 "schema": {
                   "type": "object",
                   "$ref": "#/components/schemas/GetSharesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Unauthorized request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "439": {
+            "description": "Quota of API requests was reached",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Returns users in the company",
+        "description": "Returns users.\n\nThis endpoint is a subject of\n[pagination](#section/Requests-and-responses/Pagination)\n\nRole level required: `Company Admin`\n",
+        "security": [
+          {
+            "access-token": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "next",
+            "in": "query",
+            "required": false,
+            "description": "Link to the next batch of results",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of users.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/GetUsersResponse"
                 }
               }
             }
@@ -756,6 +842,73 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ShareItem"
+            }
+          }
+        },
+        "required": [
+          "meta",
+          "data"
+        ]
+      },
+      "UserItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Id of the user"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "first name"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "last name"
+          },
+          "email": {
+            "type": "string",
+            "description": "email"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "phone number"
+          },
+          "groupId": {
+            "type": "string",
+            "description": "Id of the group that the user belongs to"
+          },
+          "teamIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Id of the teams that the user belongs to"
+          }
+        },
+        "required": [
+          "id",
+          "firstName",
+          "lastName",
+          "groupId",
+          "teamIds"
+        ]
+      },
+      "GetUsersResponse": {
+        "type": "object",
+        "properties": {
+          "meta": {
+            "type": "object",
+            "properties": {
+              "next": {
+                "type": "string",
+                "description": "Link to the next batch of results. Empty in case no more results could be fetched"
+              }
+            }
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserItem"
             }
           }
         },
