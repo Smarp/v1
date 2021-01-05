@@ -1,8 +1,7 @@
 {
   "openapi": "3.0.2",
   "info": {
-    "description": "# Versioning\n## Definition\nSmarp supports a multi-version API, which means that multiple versions of our API could be available at the same time for API users.\n\nVersions are formated as  `v1`, `v2`, ... `vN`.\n\n## Breaking changes\nEach new Major version contains at least one breaking change compared to the previous version,\ntherefore no backward compatibility is guaranteed and adopting a new Major version will require developers’ adjustments to the breaking changes.\n\n### Breaking changes include:\n- Endpoints are removed or renamed\n- Parameters are removed, renamed or introduce a type change\n- New rules for request parameters are introduced. For example, when a parameter becomes mandatory\n- New rules for response parameters are introduced. For example, when a response parameter is omitted when empty, null or 0\n- Response codes are changed or removed\n\n## Non-Breaking changes\nNon-breaking changes of API can be applied by Smarp at any time to existing versions.\nPlease take this into consideration and refer to our latest documentation when implementing an application that uses Smarp’s API.\n\n### Non-breaking changes include:\n- New endpoints are added\n- New non-mandatory request parameters are added\n- New response parameters are added\n- Bug fixes\n\n## Available versions\n  List of avaialble versions:\n  - [v1](  https://smarp.github.io/v1/)\n\n## Example\nAccessing v1 endpoint\n```\nhttps://smarp.smarpshare.com/api/v1/ping\n```\n\n# Authentication\n## Create access token\nTo get an access token, please check if you have `Channel manager`, `Group Admin` or `Company Admin` role (Check your current role by clicking your avatar on the top right-hand corner of the page. Your role is displayed under your name)\n\n- Access your company domain settings using the following URL `https://{subdomain}.smarpshare.com/#/profile/settings`\n- Navigate to `Access token` tab on the left-side menu.\n> If you are `Channel manager`, `Group Admin` or `Company Admin` role but cannot see Access token tab, please contact our support team to enable Access token feature.\n- If you don't have an access token, please create one by pressing `Create new access token` button. Then give the name for the token that is easier for you to remember.\n\n## Using access token\n- If you already have an access token, press the button with copy icon (next to the token string).\n- To use an access token, you must put it to HTTP request header `Authorization`. Here is cURL example\n```\ncurl --request GET -H \"Authorization: Bearer <your-access-token>\" https://{subdomain}.smarpshare.com/api/{version}/allowed-access-token-api\n```\n- Any API having `access-token` as `Authorizations` option in this documentation is potentially usable with access token, depending on whether you have the requiste user role permission.\n\n# Anonymity\nSome of the endpoints contain User ID or equivalent field in their reponses.\n\nHowever, certain records in the responses may omit User ID or equivalent for users who are anonymous on Smarp.\n\n## When a user is considered anonymous\n- A user has chosen to be anonymous in his/her personal settings\n- A user belongs to a Group that is set to protect its Users from being identified in analytics due to compliance reasons.\n\n## Example\n```json\n  // UserId is in the response because the user is not anonymised\n  {\n    \"UserId\": \"393c69300000000000000000\",\n    \"PostId\": \"263c69300000000000000000\"\n  }\n\n  // UserId is not in the response because the user is anonymised\n  {\n    \"PostId\": \"493c69300000000000000000\"\n  }\n\n```\n\n# Requests and responses\n## Pagination\n\nSome of the HTTP GET endpoints returns only portion of the requested data per request.\n\nMaximum amount of items returned per request is 1000.\n\nIn order to iterate throughout other items use `next` parameter. The value of `next` could be obtained in the result of request.\n\n### Example\nAccessing [GET posts](#tag/posts) v1 endpoint.\n\nFirst request\n```\nhttps://smarp.smarpshare.com/api/v1/posts\n```\nIn the response there are 1000 items and link to the reference to the next request in `meta.next`\n\n```\n{\n  \"meta\": {\n    \"next\": \"510000000000000000000000\"  <---- reference to the next request\n  },\n  \"data\": [\n    {\n      \"id\": \"500000000000000000000000\",\n      \"publishedAt\": \"2012-07-13T11:01:20Z\",\n      \"title\": \"Post title N 1\",\n      \"url\": \"https://someurl1\",\n      \"type\": \"link\"\n    },\n    ...\n    {\n      \"id\": \"510000000000000000000000\",\n      \"publishedAt\": \"2013-01-23T15:21:36Z\",\n      \"title\": \"Post title N 1000\",\n      \"url\": \"https://someurl1000\",\n      \"type\": \"link\"\n    }\n  ]\n}\n```\nIn order to get another batch of results send same `HTTP GET` request with `next` parameter.\nThe value of `next` is taken from the results of the previous request.\n\nSecond request\n\n```\n  https://smarp.smarpshare.com/api/v1/posts?next=510000000000000000000000\n```\n\nIn the response there is no `meta.next` value.\n\nIt means that there is no more items to fetch, therefore there is no need to make any more calls.\n\n   ```\n   {\n     \"meta\": {},\n     \"data\": [\n       {\n         \"id\": \"550000000000000000000000\",\n         \"publishedAt\": \"2015-03-11T08:42:40Z\",\n         \"title\": \"Post title N 1001\",\n         \"url\": \"https://someurl1001\",\n         \"type\": \"link\"\n       }\n     ]\n   }\n   ```\n",
-    "version": "1",
+    "description": "# Basic concepts\n\n## Versioning\n### Definition\nSmarp supports a multi-version API, which means that multiple versions of our API could be available at the same time for API users.\n\nVersions are formated as  `v1`, `v2`, ... `vN`.\n\n#### Breaking changes\nEach new Major version contains at least one breaking change compared to the previous version,\ntherefore no backward compatibility is guaranteed and adopting a new Major version will require developers’ adjustments to the breaking changes.\n\n##### Breaking changes include:\n- Endpoints are removed or renamed\n- Parameters are removed, renamed or introduce a type change\n- New rules for request parameters are introduced. For example, when a parameter becomes mandatory\n- New rules for response parameters are introduced. For example, when a response parameter is omitted when empty, null or 0\n- Response codes are changed or removed\n\n#### Non-Breaking changes\nNon-breaking changes of API can be applied by Smarp at any time to existing versions.\nPlease take this into consideration and refer to our latest documentation when implementing an application that uses Smarp’s API.\n\n##### Non-breaking changes include:\n- New endpoints are added\n- New non-mandatory request parameters are added\n- New response parameters are added\n- Bug fixes\n\n#### Available versions\n  List of avaialble versions:\n  - [v1](  https://smarp.github.io/v1/)\n\n#### Example\nAccessing v1 endpoint\n```\nhttps://smarp.smarpshare.com/api/v1/ping\n```\n\n## Authentication\n### Create access token\nTo get an access token, please check if you have `Channel manager`, `Group Admin` or `Company Admin` role (Check your current role by clicking your avatar on the top right-hand corner of the page. Your role is displayed under your name)\n\n- Access your company domain settings using the following URL `https://{subdomain}.smarpshare.com/#/profile/settings`\n- Navigate to `Access token` tab on the left-side menu.\n> If you are `Channel manager`, `Group Admin` or `Company Admin` role but cannot see Access token tab, please contact our support team to enable Access token feature.\n- If you don't have an access token, please create one by pressing `Create new access token` button. Then give the name for the token that is easier for you to remember.\n\n### Using access token\n- If you already have an access token, press the button with copy icon (next to the token string).\n- To use an access token, you must put it to HTTP request header `Authorization`. Here is cURL example\n```\ncurl --request GET -H \"Authorization: Bearer <your-access-token>\" https://{subdomain}.smarpshare.com/api/{version}/allowed-access-token-api\n```\n- Any API having `access-token` as `Authorizations` option in this documentation is potentially usable with access token, depending on whether you have the requiste user role permission.\n\n## Requests and responses\n### Pagination\n\nSome of the HTTP GET endpoints returns only portion of the requested data per request.\n\nMaximum amount of items returned per request is 1000.\n\nIn order to iterate throughout other items use `next` parameter. The value of `next` could be obtained in the result of request.\n\n#### Example\nAccessing [GET posts](#tag/posts) v1 endpoint.\n\nFirst request\n```\nhttps://smarp.smarpshare.com/api/v1/posts\n```\nIn the response there are 1000 items and link to the reference to the next request in `meta.next`\n\n```\n{\n  \"meta\": {\n    \"next\": \"510000000000000000000000\"  <---- reference to the next request\n  },\n  \"data\": [\n    {\n      \"id\": \"500000000000000000000000\",\n      \"publishedAt\": \"2012-07-13T11:01:20Z\",\n      \"title\": \"Post title N 1\",\n      \"url\": \"https://someurl1\",\n      \"type\": \"link\"\n    },\n    ...\n    {\n      \"id\": \"510000000000000000000000\",\n      \"publishedAt\": \"2013-01-23T15:21:36Z\",\n      \"title\": \"Post title N 1000\",\n      \"url\": \"https://someurl1000\",\n      \"type\": \"link\"\n    }\n  ]\n}\n```\nIn order to get another batch of results send same `HTTP GET` request with `next` parameter.\nThe value of `next` is taken from the results of the previous request.\n\nSecond request\n\n```\n  https://smarp.smarpshare.com/api/v1/posts?next=510000000000000000000000\n```\n\nIn the response there is no `meta.next` value.\n\nIt means that there is no more items to fetch, therefore there is no need to make any more calls.\n\n   ```\n   {\n     \"meta\": {},\n     \"data\": [\n       {\n         \"id\": \"550000000000000000000000\",\n         \"publishedAt\": \"2015-03-11T08:42:40Z\",\n         \"title\": \"Post title N 1001\",\n         \"url\": \"https://someurl1001\",\n         \"type\": \"link\"\n       }\n     ]\n   }\n   ```\n## Anonymity\nSome of the endpoints contain User ID or equivalent field in their reponses.\n\nHowever, certain records in the responses may omit User ID or equivalent for users who are anonymous on Smarp.\n\n### When a user is considered anonymous\n- A user has chosen to be anonymous in his/her personal settings\n- A user belongs to a Group that is set to protect its Users from being identified in analytics due to compliance reasons.\n\n### Example\n```json\n  // UserId is in the response because the user is not anonymised\n  {\n    \"UserId\": \"393c69300000000000000000\",\n    \"PostId\": \"263c69300000000000000000\"\n  }\n\n  // UserId is not in the response because the user is anonymised\n  {\n    \"PostId\": \"493c69300000000000000000\"\n  }\n\n```\n",
     "title": "Smarp API Reference",
     "contact": {
       "name": "Tech Support",
@@ -27,12 +26,16 @@
   ],
   "tags": [
     {
-      "name": "ping",
-      "description": "Check API availability"
-    },
-    {
       "name": "clicks",
       "description": "Clicks endpoints"
+    },
+    {
+      "name": "groups",
+      "description": "Groups endpoints"
+    },
+    {
+      "name": "ping",
+      "description": "Check API availability"
     },
     {
       "name": "posts",
@@ -43,47 +46,22 @@
       "description": "Shares endpoints"
     },
     {
-      "name": "users",
-      "description": "Users endpoints"
-    },
-    {
-      "name": "groups",
-      "description": "Groups endpoints"
-    },
-    {
       "name": "teams",
       "description": "Teams endpoints"
+    },
+    {
+      "name": "users",
+      "description": "Users endpoints"
     }
   ],
   "paths": {
-    "/ping": {
-      "get": {
-        "tags": [
-          "ping"
-        ],
-        "summary": "Check API availability",
-        "description": "Endpoint for check availability of server",
-        "responses": {
-          "200": {
-            "description": "Contains PONG response.",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/clicks": {
       "get": {
         "tags": [
           "clicks"
         ],
         "summary": "Returns clicks generated from the posts shared by users to social media",
-        "description": "Returns all clicks based on the period in which clicks happened.\n\nThis Endpoint is a subject of [pagination](#section/Requests-and-responses/Pagination)\n\nRole level required: `Company Admin`\n\n#### Anonymity\n\nThis endpoint supports user (sharerId) [Anonymity](#section/Anonymity)\n",
+        "description": "Returns all clicks based on the period in which clicks happened.\n\nThis Endpoint is a subject of [pagination](#section/Basic-concepts/Requests-and-responses)\n\nRole level required: `Company Admin`\n\n#### Anonymity\n\nThis endpoint supports user (sharerId) [Anonymity](#section/Basic-concepts/Anonymity)\n",
         "security": [
           {
             "access-token": []
@@ -128,292 +106,6 @@
                 "schema": {
                   "type": "object",
                   "$ref": "#/components/schemas/GetClicksResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/ErrorEnvelope"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Unauthorized request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/ErrorEnvelope"
-                }
-              }
-            }
-          },
-          "439": {
-            "description": "Quota of API requests was reached",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/ErrorEnvelope"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/ErrorEnvelope"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/posts": {
-      "get": {
-        "tags": [
-          "posts"
-        ],
-        "summary": "Returns posts",
-        "description": "Returns posts based on the period in which posts were published. Other criteria:\n\n- Posts that have been deleted will not be returned.\n- Posts that were published in private channels will not be returned.\n\nEndpoint is a subject of [pagination](#section/Requests-and-responses/Pagination)\n\nRole level required: `Company Admin`\n",
-        "security": [
-          {
-            "access-token": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "from",
-            "in": "query",
-            "description": "Posts that were published after this time will be returned. Date-time should be in RFC3339 format.",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "format": "date-time"
-            }
-          },
-          {
-            "name": "to",
-            "in": "query",
-            "description": "Posts that were published at or before that time will be returned. Date-time should be in RFC3339 format.",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "format": "date-time"
-            }
-          },
-          {
-            "name": "next",
-            "in": "query",
-            "required": false,
-            "description": "Link to the next batch of results.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "A list of posts.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/GetPostsResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/ErrorEnvelope"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Unauthorized request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/ErrorEnvelope"
-                }
-              }
-            }
-          },
-          "439": {
-            "description": "Quota of API requests was reached",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/ErrorEnvelope"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/ErrorEnvelope"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/shares": {
-      "get": {
-        "tags": [
-          "shares"
-        ],
-        "summary": "Returns shares",
-        "description": "Returns all shared shares based on the period in which share was done.\n\nThis Endpoint is a subject of [pagination](#section/Requests-and-responses/Pagination)\n\nRole level required: `Company Admin`\n\n#### Anonymity\n\nThis endpoint supports user (sharerId) [Anonymity](#section/Anonymity)\n",
-        "security": [
-          {
-            "access-token": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "from",
-            "in": "query",
-            "description": "Shares that created after this time will be returned. Date-time should be in RFC3339 format.",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "format": "date-time"
-            }
-          },
-          {
-            "name": "to",
-            "in": "query",
-            "description": "Shares that created at or before that time will be returned. Date-time should be in RFC3339 format.",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "format": "date-time"
-            }
-          },
-          {
-            "name": "next",
-            "in": "query",
-            "required": false,
-            "description": "Link to the next batch of results",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "A list of shares.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/GetSharesResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/ErrorEnvelope"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Unauthorized request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/ErrorEnvelope"
-                }
-              }
-            }
-          },
-          "439": {
-            "description": "Quota of API requests was reached",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/ErrorEnvelope"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/ErrorEnvelope"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/users": {
-      "get": {
-        "tags": [
-          "users"
-        ],
-        "summary": "Returns users in the company",
-        "description": "Returns users.\n\nThis endpoint is a subject of\n[pagination](#section/Requests-and-responses/Pagination)\n\nRole level required: `Company Admin`\n",
-        "security": [
-          {
-            "access-token": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "next",
-            "in": "query",
-            "required": false,
-            "description": "Link to the next batch of results",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "A list of users.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/GetUsersResponse"
                 }
               }
             }
@@ -536,13 +228,320 @@
         }
       }
     },
+    "/ping": {
+      "get": {
+        "tags": [
+          "ping"
+        ],
+        "summary": "Check API availability",
+        "description": "Endpoint for check availability of server",
+        "responses": {
+          "200": {
+            "description": "Contains PONG response.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/posts": {
+      "get": {
+        "tags": [
+          "posts"
+        ],
+        "summary": "Returns posts",
+        "description": "Returns posts based on the period in which posts were published. Other criteria:\n\n- Posts that have been deleted will not be returned.\n- Posts that were published in private channels will not be returned.\n\nEndpoint is a subject of [pagination](#section/Basic-concepts/Requests-and-responses)\n\nRole level required: `Company Admin`\n",
+        "security": [
+          {
+            "access-token": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Posts that were published after this time will be returned. Date-time should be in RFC3339 format.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "Posts that were published at or before that time will be returned. Date-time should be in RFC3339 format.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "next",
+            "in": "query",
+            "required": false,
+            "description": "Link to the next batch of results.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of posts.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/GetPostsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Unauthorized request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "439": {
+            "description": "Quota of API requests was reached",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/shares": {
+      "get": {
+        "tags": [
+          "shares"
+        ],
+        "summary": "Returns shares",
+        "description": "Returns all shared shares based on the period in which share was done.\n\nThis Endpoint is a subject of [pagination](#section/Basic-concepts/Requests-and-responses)\n\nRole level required: `Company Admin`\n\n#### Anonymity\n\nThis endpoint supports user (sharerId) [Anonymity](#section/Basic-concepts/Anonymity)\n",
+        "security": [
+          {
+            "access-token": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Shares that created after this time will be returned. Date-time should be in RFC3339 format.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "Shares that created at or before that time will be returned. Date-time should be in RFC3339 format.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "next",
+            "in": "query",
+            "required": false,
+            "description": "Link to the next batch of results",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of shares.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/GetSharesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Unauthorized request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "439": {
+            "description": "Quota of API requests was reached",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Returns users in the company",
+        "description": "Returns users.\n\nThis endpoint is a subject of\n[pagination](#section/Basic-concepts/Requests-and-responses)\n\nRole level required: `Company Admin`\n",
+        "security": [
+          {
+            "access-token": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "next",
+            "in": "query",
+            "required": false,
+            "description": "Link to the next batch of results",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of users.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/GetUsersResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Unauthorized request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "439": {
+            "description": "Quota of API requests was reached",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/teams": {
       "get": {
         "tags": [
           "teams"
         ],
         "summary": "Returns teams",
-        "description": "Returns all teams in the instance.\n\nThis Endpoint is a subject of [pagination](#section/Requests-and-responses/Pagination)\n\nRole level required: `Company Admin`\n",
+        "description": "Returns all teams in the instance.\n\nThis Endpoint is a subject of [pagination](#section/Basic-concepts/Requests-and-responses)\n\nRole level required: `Company Admin`\n",
         "security": [
           {
             "access-token": []
@@ -1012,12 +1011,6 @@
             "type": "string"
           }
         }
-      }
-    },
-    "securitySchemes": {
-      "access-token": {
-        "type": "http",
-        "scheme": "bearer"
       }
     }
   }
