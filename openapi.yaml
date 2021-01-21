@@ -149,6 +149,34 @@ info:
       }
 
     ```
+
+    ## Limits and quotas
+
+    ### Definition
+
+    Smarp has the limits and quotas of requesting the APIs. These limits help Smarp provide a reliable and fast API to everyone. We put limits and quotas on API requests to protect the system from receiving more data than it can handle.
+
+    **NOTE: _The limits and quotas are subject to change._**
+
+    Each of the different types of rate limits has a specific duration. We start calculating the time after the first call, and at the end of that duration, we reset quotas.
+
+    ### Current limits and quotas
+
+    | Time period | Maximun request count | Quotas condition        |
+    | ----------- | --------------------- | ----------------------- |
+    | 10 minutes  | 100                   | per endpoint, per token |
+    | 24 hours    | 1000                  | per token               |
+
+    ### Example
+
+    For example, if we have that two limits:
+    100 requests per 10 minutes per endpoint per token and 1000 requests per 24 hours per token:
+
+    1) We can send 100 requests to 10 different endpoints per day for a single token (100 request  * 10 endpoints = 1000 requests in total). If we do that in 1 hour, it means we should wait for 23 hours to reset quotas or use another token
+
+    2) We can send 100 requests to 1 endpoint per 10 minutes. If we do that in 1 minute, it means we should wait for 9 minutes to reset quotas or use another token
+
+    3) We can send 100 requests to 1 endpoint and 100 requests to the same endpoint per 10 minutes with a different token.
   title: Smarp API Reference
   contact:
     name: Tech Support
