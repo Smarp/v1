@@ -902,6 +902,12 @@ components:
       required:
         - meta
         - data
+    UserChannel:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Id of the channel
     UserItem:
       type: object
       properties:
@@ -928,12 +934,18 @@ components:
           items:
             type: string
           description: Id of the teams that the user belongs to
+        channels:
+          description: The list of channels that the user subscribes to
+          type: array
+          items:
+            $ref: '#/components/schemas/UserChannel'
       required:
         - id
         - firstName
         - lastName
         - groupId
         - teamIds
+        - channels
     GetUsersResponse:
       type: object
       properties:

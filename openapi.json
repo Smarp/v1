@@ -1054,6 +1054,15 @@
           "data"
         ]
       },
+      "UserChannel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Id of the channel"
+          }
+        }
+      },
       "UserItem": {
         "type": "object",
         "properties": {
@@ -1087,6 +1096,13 @@
               "type": "string"
             },
             "description": "Id of the teams that the user belongs to"
+          },
+          "channels": {
+            "description": "The list of channels that the user subscribes to",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserChannel"
+            }
           }
         },
         "required": [
@@ -1094,7 +1110,8 @@
           "firstName",
           "lastName",
           "groupId",
-          "teamIds"
+          "teamIds",
+          "channels"
         ]
       },
       "GetUsersResponse": {
