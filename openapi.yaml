@@ -788,6 +788,12 @@ components:
       required:
         - meta
         - data
+    PostChannel:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Id of the channel
     PostItem:
       type: object
       properties:
@@ -812,12 +818,18 @@ components:
             - image
             - video
           type: string
+        channels:
+          description: The list of channels that a post is associated with
+          type: array
+          items:
+            $ref: '#/components/schemas/PostChannel'
       required:
         - id
         - publishedAt
         - title
         - url
         - type
+        - channels
     GetPostsResponse:
       type: object
       properties:
