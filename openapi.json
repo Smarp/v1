@@ -904,6 +904,16 @@
           "id": {
             "type": "string",
             "description": "Id of the channel"
+          },
+          "publishedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time when the channel was published"
+          },
+          "archivedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time when the channel was archived"
           }
         }
       },
