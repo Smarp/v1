@@ -200,6 +200,8 @@ tags:
     description: Check API availability
   - name: posts
     description: Posts endpoints
+  - name: post_reads
+    description: Post Reads endpoints
   - name: shares
     description: Shares endpoints
   - name: teams
@@ -656,7 +658,7 @@ paths:
   /reads:
     get:
       tags:
-        - posts
+        - reads
       summary: Returns post reads generated from the posts
       description: |
         Returns all post reads based on the period in which reads happened.
