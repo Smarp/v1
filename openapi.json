@@ -42,10 +42,6 @@
       "description": "Posts endpoints"
     },
     {
-      "name": "post_reads",
-      "description": "Post Reads endpoints"
-    },
-    {
       "name": "shares",
       "description": "Shares endpoints"
     },

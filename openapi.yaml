@@ -200,8 +200,6 @@ tags:
     description: Check API availability
   - name: posts
     description: Posts endpoints
-  - name: post_reads
-    description: Post Reads endpoints
   - name: shares
     description: Shares endpoints
   - name: teams
