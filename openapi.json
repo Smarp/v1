@@ -56,6 +56,10 @@
     {
       "name": "channels",
       "description": "Channels endpoints"
+    },
+    {
+      "name": "hooks",
+      "description": "## Hooks payload\nEach of events have specific count of fields, what server send to given target url.\n\n#### Payload of `post_published` event\nThat event will generate a json and send to target URL with next fields:\n\n| name        | type   | description                                                  |\n| ----------- | ------ | ------------------------------------------------------------ |\n| postId      | string | ID of post (which can be used to build a preview URL: {instance}.smarpshare.com/#/previews/{postId} that directs users to a post on Smarp) |\n| postTitle   | string | Title of post                                                |\n| channelId   | string | ID of channel (which can be used to build a feed URL: {instance}.smarpshare.com/#/?type=published&channelId={channelId} that directs users to a channel on Smarp) |\n| channelName | string | Name of channel |\n\nFor example:\n```\n  {\n    \"postId\": \"000011112222333344445550\",\n    \"postTitle\": \"post title\",\n    \"channelId\": \"000011112222333344445551\",\n    \"channelTitle\": \"channel name\"\n  }\n```\n"
     }
   ],
   "paths": {
@@ -804,6 +808,239 @@
           }
         }
       }
+    },
+    "/hooks": {
+      "get": {
+        "tags": [
+          "hooks"
+        ],
+        "summary": "Return all user`s hooks",
+        "description": "Returns all hooks of user.\n",
+        "security": [
+          {
+            "access-token": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of hooks.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/GetHooksResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Unauthorized request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "439": {
+            "description": "Quota of API requests was reached",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "hooks"
+        ],
+        "summary": "Create a new hook",
+        "description": "That endpoint can be used to create a new subscription for a given event type\n\nRole level required: `Company Admin`\n",
+        "security": [
+          {
+            "access-token": []
+          }
+        ],
+        "requestBody": {
+          "description": "Expect to receive object with targetURL, event type and related additional data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HookSubscribeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Hook was created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/CreateHooksResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Unauthorized request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "439": {
+            "description": "Quota of API requests was reached",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hooks/{hookId}": {
+      "delete": {
+        "tags": [
+          "hooks"
+        ],
+        "summary": "Remove a hook",
+        "description": "Remove a hook by subscription ID\n",
+        "security": [
+          {
+            "access-token": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "hookId",
+            "in": "path",
+            "description": "Id of the hook to be removed",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ObjectId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Empty response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/RemoveHooksResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Unauthorized request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "439": {
+            "description": "Quota of API requests was reached",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1333,9 +1570,135 @@
           "data"
         ]
       },
+      "HookSubscribeRequest": {
+        "type": "object",
+        "required": [
+          "TargetURL",
+          "Type"
+        ],
+        "properties": {
+          "targetUrl": {
+            "type": "string",
+            "description": "Target URL to receive subscribed data (Target URL must be https)"
+          },
+          "type": {
+            "$ref": "#/components/schemas/HookType",
+            "description": "Type of subscription"
+          },
+          "channelId": {
+            "$ref": "#/components/schemas/ObjectId",
+            "description": "Id of the Smarp channel that a subscription is corresponding to. Smarp will send events whenever there is a new post published in the channel"
+          }
+        }
+      },
+      "SubscriptionPayload": {
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "createdAt",
+          "targetUrl"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ObjectId",
+            "description": "Id of the subscription"
+          },
+          "type": {
+            "$ref": "#/components/schemas/HookType",
+            "description": "Type of subscription"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time when the subscription was created"
+          },
+          "channelId": {
+            "$ref": "#/components/schemas/ObjectId",
+            "description": "ID of the Channel to unsubscribe from"
+          },
+          "targetUrl": {
+            "type": "string",
+            "description": "Target URL to receive updates"
+          }
+        }
+      },
+      "GetHooksResponse": {
+        "type": "object",
+        "properties": {
+          "meta": {
+            "type": "object",
+            "properties": {
+              "next": {
+                "type": "string",
+                "description": "Link to the next batch of results. Empty in case no more results could be fetched"
+              }
+            }
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubscriptionPayload"
+            }
+          }
+        },
+        "required": [
+          "meta",
+          "data"
+        ]
+      },
+      "CreateHooksResponse": {
+        "type": "object",
+        "properties": {
+          "meta": {
+            "type": "object",
+            "properties": {
+              "next": {
+                "type": "string",
+                "description": "Link to the next batch of results. Empty in case no more results could be fetched"
+              }
+            }
+          },
+          "data": {
+            "type": "object",
+            "$ref": "#/components/schemas/SubscriptionPayload"
+          }
+        },
+        "required": [
+          "meta",
+          "data"
+        ]
+      },
+      "RemoveHooksResponse": {
+        "type": "object",
+        "properties": {
+          "meta": {
+            "type": "object",
+            "properties": {
+              "next": {
+                "type": "string",
+                "description": "Link to the next batch of results. Empty in case no more results could be fetched"
+              }
+            }
+          },
+          "data": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "meta",
+          "data"
+        ]
+      },
       "ObjectId": {
         "type": "string",
         "pattern": "^[0-9a-fA-F]{24}$"
+      },
+      "HookType": {
+        "type": "string",
+        "enum": [
+          "post_published"
+        ]
       },
       "Error": {
         "required": [
