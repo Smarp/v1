@@ -208,6 +208,8 @@ tags:
     description: Users endpoints
   - name: channels
     description: Channels endpoints
+  - name: User Management
+    description: 'Smarp''s user management implementation of SCIM follows strictly, but not all, the SCIM 2 specifications published under the [IETF](https://tools.ietf.org/wg/scim/). This document provides general information about the scope of SCIM implementation within Smarp application. The full documentation can be found on [SCIM website](http://www.simplecloud.info).'
   - name: hooks
     description: |
       ## Hooks payload
@@ -747,6 +749,241 @@ paths:
               schema:
                 type: object
                 $ref: '#/components/schemas/ErrorEnvelope'
+  /scim/v2/user:
+    get:
+      tags:
+        - User Management
+      summary: Retrieve users in the company
+      description: |
+        Return either a user matched by the optional filter or an empty list. It is recommended to call this endpoint without a filter to test the integration connection.
+      security:
+        - access-token: []
+      parameters:
+        - name: filter
+          in: query
+          description: 'A formatted filter. It must have a form of: `userName eq userPrincipleName`, where "userPrincipleName" represents the user email address.'
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A ListResponse (following SCIM schema). It is returned even if no user has been found matching the filter.
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/SCIMListResponse'
+        '403':
+          description: Unauthorized request
+        '439':
+          description: Quota of API requests was reached.
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '500':
+          description: Internal server error
+    post:
+      tags:
+        - User Management
+      summary: Create a new user
+      description: |
+        Create a user based on request. It returns Smarp Id of the new user. This id should be saved and used in subsequent requests for the user.
+      security:
+        - access-token: []
+      parameters:
+        - name: filter
+          in: query
+          description: 'A formatted filter. It must have a form of: `userName eq userPrincipleName`, where "userPrincipleName" represents the user email address.'
+          required: false
+          schema:
+            type: string
+      requestBody:
+        description: Data about the new user
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/SCIMUser'
+      responses:
+        '200':
+          description: The user which has been created.
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/SCIMUser'
+        '400':
+          description: A bad request. The request schema is malformed.
+        '403':
+          description: Unauthorized request
+        '409':
+          description: Resource conflict. A user with the same email already exists.
+        '439':
+          description: Quota of API requests was reached.
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '500':
+          description: Internal server error
+  '/scim/v2/user/{userId}':
+    get:
+      tags:
+        - User Management
+      summary: Retrieve a user by Smarp Id
+      description: |
+        Return a user matching the Smarp user Id.
+      security:
+        - access-token: []
+      parameters:
+        - name: userId
+          in: path
+          description: Smarp Id of the user
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A user has been found.
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/SCIMUser'
+        '400':
+          description: A bad request. The UserId might be invalid.
+        '403':
+          description: Unauthorized request
+        '404':
+          description: User not found
+        '439':
+          description: Quota of API requests was reached.
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '500':
+          description: Internal server error
+    delete:
+      tags:
+        - User Management
+      summary: Delete a user by Smarp Id
+      description: |
+        Delete the user matching UserId.
+      security:
+        - access-token: []
+      parameters:
+        - name: userId
+          in: path
+          description: Smarp Id of the user
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: The user has been deleted.
+        '400':
+          description: A bad request. The UserId might be invalid.
+        '403':
+          description: Unauthorized request
+        '404':
+          description: User not found
+        '439':
+          description: Quota of API requests was reached.
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '500':
+          description: Internal server error
+    put:
+      tags:
+        - User Management
+      summary: Update a user
+      description: |
+        Replace the user matching UserId with new data. It returns the user with new data. The UserId stays unchanged.
+      security:
+        - access-token: []
+      parameters:
+        - name: userId
+          in: path
+          description: Smarp Id of the user
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: New data about the user
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/SCIMUser'
+      responses:
+        '204':
+          description: The user has been deleted.
+        '400':
+          description: A bad request. The UserId might be invalid.
+        '403':
+          description: Unauthorized request
+        '404':
+          description: User not found
+        '439':
+          description: Quota of API requests was reached.
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '500':
+          description: Internal server error
+    patch:
+      tags:
+        - User Management
+      summary: Update a user
+      description: |
+        Update the user matching UserId with new data. Only data present in the request will be updated.
+      security:
+        - access-token: []
+      parameters:
+        - name: userId
+          in: path
+          description: Smarp Id of the user
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: New data about the user
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/SCIMUserPatch'
+      responses:
+        '204':
+          description: The user has been updated.
+        '400':
+          description: A bad request. The UserId might be invalid or Operation is invalid.
+        '403':
+          description: Unauthorized request
+        '404':
+          description: User not found
+        '439':
+          description: Quota of API requests was reached.
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '500':
+          description: Internal server error
   /hooks:
     get:
       tags:
@@ -1274,6 +1511,114 @@ components:
       required:
         - meta
         - data
+    SCIMListResponse:
+      type: object
+      properties:
+        schemas:
+          description: 'Namespaces of the SCIM schemas present in the current structure. It must contain "urn:ietf:params:scim:schemas:core:2.0:ListResponse"'
+          type: array
+          items:
+            type: string
+        totalResults:
+          description: 'The total number of users found based on applied filter, as indicated in the Resources.'
+          type: integer
+        startIndex:
+          description: The starting index of the Resources.
+          type: integer
+        itemsPerPage:
+          description: The number of users returned in this response.
+          type: integer
+        Resources:
+          description: The users representation.
+          type: array
+          items:
+            $ref: '#/components/schemas/SCIMUser'
+    SCIMUser:
+      type: object
+      properties:
+        schemas:
+          description: 'Namespaces of the SCIM schemas present in the current structure. It must contain "urn:ietf:params:scim:schemas:core:2.0:User"'
+          type: array
+          items:
+            type: string
+        id:
+          description: Smarp Id of the user. It should be stored on the client and is used in subsequent requests.
+          type: string
+        active:
+          description: State of the user on the client.
+          type: boolean
+        userName:
+          description: 'UserName of the user, in the form of an email address.'
+          type: string
+        name:
+          description: 'Name of the user, including family name and given name'
+          type: object
+          properties:
+            familyName:
+              type: string
+            givenName:
+              type: string
+        addresses:
+          description: List of addresses of the user. Only 'work' address is read. Only 1 'work' address is read.
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                description: Type of the address. Only 'work' address is read
+                type: string
+                enum:
+                  - home
+                  - work
+              country:
+                description: Its value is used to assign a user to a Smarp Group.
+                type: string
+              locality:
+                description: Its value is used to assign a user to a Smarp Team.
+                type: string
+              region:
+                description: Its value is used to assign a user to a Smarp Team.
+                type: string
+        'urn:ietf:params:scim:schemas:extension:enterprise:2.0:User:organization':
+          description: Its value is used to assign a user to a Smarp Team.
+          type: string
+        'urn:ietf:params:scim:schemas:extension:enterprise:2.0:User:division':
+          description: Its value is used to assign a user to a Smarp Team.
+          type: string
+        'urn:ietf:params:scim:schemas:extension:enterprise:2.0:User:department':
+          description: Its value is used to assign a user to a Smarp Team.
+          type: string
+    SCIMUserPatch:
+      type: object
+      properties:
+        schemas:
+          description: 'Namespaces of the SCIM schemas present in the current structure. It must contain "urn:ietf:params:scim:api:messages:2.0:PatchOp"'
+          type: array
+          items:
+            type: string
+        Operations:
+          description: 'Each item should contain a field to be updated, its new value and the operation. There must be at least 1 item.'
+          type: array
+          items:
+            type: object
+            properties:
+              op:
+                descrition: The operation to be executed.
+                type: string
+                enum:
+                  - add
+                  - remove
+                  - replace
+              path:
+                description: |
+                  The attribute path describing the target of the operation. Valid examples of "path" are as follow:
+                    - "path":"active"
+                    - "path":"name.familyName"
+                    - "path":"addresses[type eq \"work\"].country"
+                type: string
+              value:
+                description: The value to be added or replacing.
+                type: string
     HookSubscribeRequest:
       type: object
       required:
