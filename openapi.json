@@ -813,7 +813,19 @@
         }
       }
     },
-    "/scim/v2/user": {
+    "/scim/v2/users": {
+      "servers": [
+        {
+          "url": "https://{subdomain}.smarpshare.com/api/",
+          "description": "Base domain for User management API",
+          "variables": {
+            "subdomain": {
+              "default": "login",
+              "description": "this value is assigned by the service provider"
+            }
+          }
+        }
+      ],
       "get": {
         "tags": [
           "User Management"
@@ -878,17 +890,6 @@
             "access-token": []
           }
         ],
-        "parameters": [
-          {
-            "name": "filter",
-            "in": "query",
-            "description": "A formatted filter. It must have a form of: `userName eq userPrincipleName`, where \"userPrincipleName\" represents the user email address.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "requestBody": {
           "description": "Data about the new user",
           "required": true,
@@ -939,7 +940,19 @@
         }
       }
     },
-    "/scim/v2/user/{userId}": {
+    "/scim/v2/users/{userId}": {
+      "servers": [
+        {
+          "url": "https://{subdomain}.smarpshare.com/api/",
+          "description": "Base domain for User management API",
+          "variables": {
+            "subdomain": {
+              "default": "login",
+              "description": "this value is assigned by the service provider"
+            }
+          }
+        }
+      ],
       "get": {
         "tags": [
           "User Management"

@@ -749,7 +749,14 @@ paths:
               schema:
                 type: object
                 $ref: '#/components/schemas/ErrorEnvelope'
-  /scim/v2/user:
+  /scim/v2/users:
+    servers:
+      - url: 'https://{subdomain}.smarpshare.com/api/'
+        description: Base domain for User management API
+        variables:
+          subdomain:
+            default: login
+            description: this value is assigned by the service provider
     get:
       tags:
         - User Management
@@ -792,13 +799,6 @@ paths:
         Create a user based on request. It returns Smarp Id of the new user. This id should be saved and used in subsequent requests for the user.
       security:
         - access-token: []
-      parameters:
-        - name: filter
-          in: query
-          description: 'A formatted filter. It must have a form of: `userName eq userPrincipleName`, where "userPrincipleName" represents the user email address.'
-          required: false
-          schema:
-            type: string
       requestBody:
         description: Data about the new user
         required: true
@@ -830,7 +830,14 @@ paths:
                 $ref: '#/components/schemas/ErrorEnvelope'
         '500':
           description: Internal server error
-  '/scim/v2/user/{userId}':
+  '/scim/v2/users/{userId}':
+    servers:
+      - url: 'https://{subdomain}.smarpshare.com/api/'
+        description: Base domain for User management API
+        variables:
+          subdomain:
+            default: login
+            description: this value is assigned by the service provider
     get:
       tags:
         - User Management
