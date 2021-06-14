@@ -26,35 +26,35 @@
   ],
   "tags": [
     {
-      "name": "clicks",
+      "name": "Clicks",
       "description": "Clicks endpoints"
     },
     {
-      "name": "groups",
+      "name": "Groups",
       "description": "Groups endpoints"
     },
     {
-      "name": "ping",
+      "name": "Ping",
       "description": "Check API availability"
     },
     {
-      "name": "posts",
+      "name": "Posts",
       "description": "Posts endpoints"
     },
     {
-      "name": "shares",
+      "name": "Shares",
       "description": "Shares endpoints"
     },
     {
-      "name": "teams",
+      "name": "Teams",
       "description": "Teams endpoints"
     },
     {
-      "name": "users",
+      "name": "Users",
       "description": "Users endpoints"
     },
     {
-      "name": "channels",
+      "name": "Channels",
       "description": "Channels endpoints"
     },
     {
@@ -62,7 +62,7 @@
       "description": "Smarp's user management implementation of SCIM follows strictly, but not all, the SCIM 2 specifications published under the [IETF](https://tools.ietf.org/wg/scim/). This document provides general information about the scope of SCIM implementation within Smarp application. The full documentation can be found on [SCIM website](http://www.simplecloud.info)."
     },
     {
-      "name": "hooks",
+      "name": "Hooks",
       "description": "## Hooks payload\nEach of events have specific count of fields, what server send to given target url.\n\n#### Payload of `post_published` event\nThat event will generate a json and send to target URL with next fields:\n\n| name        | type   | description                                                  |\n| ----------- | ------ | ------------------------------------------------------------ |\n| postId      | string | ID of post (which can be used to build a preview URL: {instance}.smarpshare.com/#/previews/{postId} that directs users to a post on Smarp) |\n| postTitle   | string | Title of post                                                |\n| channelId   | string | ID of channel (which can be used to build a feed URL: {instance}.smarpshare.com/#/?type=published&channelId={channelId} that directs users to a channel on Smarp) |\n| channelName | string | Name of channel |\n\nFor example:\n```\n  {\n    \"postId\": \"000011112222333344445550\",\n    \"postTitle\": \"post title\",\n    \"channelId\": \"000011112222333344445551\",\n    \"channelTitle\": \"channel name\"\n  }\n```\n"
     }
   ],
@@ -70,7 +70,7 @@
     "/clicks": {
       "get": {
         "tags": [
-          "clicks"
+          "Clicks"
         ],
         "summary": "Returns clicks generated from the posts shared by users to social media",
         "description": "Returns all clicks based on the period in which clicks happened.\n\nThis Endpoint is a subject of [pagination](#section/Basic-concepts/Requests-and-responses)\n\nRole level required: `Company Admin`\n\n#### Anonymity\n\nThis endpoint supports user (sharerId) [Anonymity](#section/Basic-concepts/Anonymity)\n",
@@ -172,7 +172,7 @@
     "/groups": {
       "get": {
         "tags": [
-          "groups"
+          "Groups"
         ],
         "summary": "Returns groups",
         "description": "Returns all groups within instance\n",
@@ -243,7 +243,7 @@
     "/ping": {
       "get": {
         "tags": [
-          "ping"
+          "Ping"
         ],
         "summary": "Check API availability",
         "description": "Endpoint for check availability of server",
@@ -264,7 +264,7 @@
     "/posts": {
       "get": {
         "tags": [
-          "posts"
+          "Posts"
         ],
         "summary": "Returns posts",
         "description": "Returns posts based on the period in which posts were published. Other criteria:\n\n- Posts that have been deleted will not be returned.\n- Posts that were published in private channels will not be returned.\n\nEndpoint is a subject of [pagination](#section/Basic-concepts/Requests-and-responses)\n\nRole level required: `Company Admin`\n",
@@ -366,7 +366,7 @@
     "/shares": {
       "get": {
         "tags": [
-          "shares"
+          "Shares"
         ],
         "summary": "Returns shares",
         "description": "Returns all shared shares based on the period in which share was done.\n\nThis Endpoint is a subject of [pagination](#section/Basic-concepts/Requests-and-responses)\n\nRole level required: `Company Admin`\n\n#### Anonymity\n\nThis endpoint supports user (sharerId) [Anonymity](#section/Basic-concepts/Anonymity)\n",
@@ -468,7 +468,7 @@
     "/users": {
       "get": {
         "tags": [
-          "users"
+          "Users"
         ],
         "summary": "Returns users in the company",
         "description": "Returns users.\n\nThis endpoint is a subject of\n[pagination](#section/Basic-concepts/Requests-and-responses)\n\nRole level required: `Company Admin`\n",
@@ -550,7 +550,7 @@
     "/teams": {
       "get": {
         "tags": [
-          "teams"
+          "Teams"
         ],
         "summary": "Returns teams",
         "description": "Returns all teams in the instance.\n\nThis Endpoint is a subject of [pagination](#section/Basic-concepts/Requests-and-responses)\n\nRole level required: `Company Admin`\n",
@@ -632,7 +632,7 @@
     "/channels": {
       "get": {
         "tags": [
-          "channels"
+          "Channels"
         ],
         "summary": "Returns channels",
         "description": "Returns all channels within instance\n",
@@ -714,7 +714,7 @@
     "/reads": {
       "get": {
         "tags": [
-          "reads"
+          "Reads"
         ],
         "summary": "Returns post reads generated from the posts",
         "description": "Returns all post reads based on the period in which reads happened.\n\nThis Endpoint is a subject of [pagination](#section/Basic-concepts/Requests-and-responses)\n\nRole level required: `Company Admin`\n",
@@ -1193,7 +1193,7 @@
     "/hooks": {
       "get": {
         "tags": [
-          "hooks"
+          "Hooks"
         ],
         "summary": "Return all user`s hooks",
         "description": "Returns all hooks of user.\n",
@@ -1262,7 +1262,7 @@
       },
       "post": {
         "tags": [
-          "hooks"
+          "Hooks"
         ],
         "summary": "Create a new hook",
         "description": "That endpoint can be used to create a new subscription for a given event type\n\nRole level required: `Company Admin`\n",
@@ -1344,7 +1344,7 @@
     "/hooks/{hookId}": {
       "delete": {
         "tags": [
-          "hooks"
+          "Hooks"
         ],
         "summary": "Remove a hook",
         "description": "Remove a hook by subscription ID\n",
