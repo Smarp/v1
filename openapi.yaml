@@ -442,7 +442,7 @@ paths:
                 $ref: '#/components/schemas/ErrorEnvelope'
     post:
       tags:
-        - posts
+        - Posts
       summary: Create a new post
       description: |
         Create a new post with the data provided. Currently supporting 2 post types: Link and Article.

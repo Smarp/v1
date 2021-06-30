@@ -364,7 +364,7 @@
       },
       "post": {
         "tags": [
-          "posts"
+          "Posts"
         ],
         "summary": "Create a new post",
         "description": "Create a new post with the data provided. Currently supporting 2 post types: Link and Article.\nUpon successful creation, the new post is returned.\n\nRole level required: `Company Admin`\n",
