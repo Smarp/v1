@@ -440,6 +440,61 @@ paths:
               schema:
                 type: object
                 $ref: '#/components/schemas/ErrorEnvelope'
+    post:
+      tags:
+        - posts
+      summary: Create a new post
+      description: |
+        Create a new post with the data provided. Currently supporting 2 post types: Link and Article.
+        Upon successful creation, the new post is returned.
+
+        Role level required: `Company Admin`
+      security:
+        - access-token: []
+      requestBody:
+        description: Data for the new post.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/PostCreateRequest'
+      responses:
+        '200':
+          description: The post which has been created.
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/PostCreateResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '403':
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '439':
+          description: Quota of API requests was reached
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ErrorEnvelope'
   /shares:
     get:
       tags:
@@ -1272,6 +1327,63 @@ components:
       required:
         - meta
         - data
+    PostCreateRequest:
+      type: object
+      properties:
+        url:
+          description: 'Source URL of the post, which users will land on if they choose to view the original source. Required for Link-type posts. Must be left empty for Article-type posts.'
+          type: string
+        title:
+          description: Title of the post. Required for Article-type posts.
+          type: string
+        body:
+          description: Body text of the post.
+          type: string
+        imageUrlList:
+          description: Image URL of the post. Only the first URL is used currently for Link- and Article-type posts.
+          type: string
+        isShareable:
+          description: whether the post can be shared by users to social media.
+          type: string
+        isPublished:
+          description: 'whether the post is set to be published or proposed. If TRUE, the post will be published right away and archived after a duration according to Company Settings. If FALSE, the post will be proposed for approval.'
+          type: string
+        channelList:
+          description: List of channel Ids where the post will be created in.
+          type: string
+        type:
+          description: 'Type of the post, indicating whether the post will be a Link- or Article-type post.'
+          type: string
+          enum:
+            - article
+            - link
+    PostCreateResponse:
+      type: object
+      properties:
+        id:
+          description: Id of the post.
+          type: string
+        postPreviewUrl:
+          description: Link to open the post on Smarp.
+          type: string
+        imageUrl:
+          description: Image URL of the post if available.
+          type: string
+        title:
+          description: Title of the post.
+          type: string
+        body:
+          description: Body text of the post.
+          type: string
+        author:
+          description: Name of the user who authorized the request.
+          type: string
+        authorAvatar:
+          description: Avatar image URL of the user who authorized the request.
+          type: string
+        language:
+          description: Language of the post (detected by Smarp).
+          type: string
     ShareItem:
       type: object
       properties:
