@@ -1708,11 +1708,11 @@
           },
           "isShareable": {
             "description": "whether the post can be shared by users to social media.",
-            "type": "string"
+            "type": "boolean"
           },
           "isPublished": {
             "description": "whether the post is set to be published or proposed. If TRUE, the post will be published right away and archived after a duration according to Company Settings. If FALSE, the post will be proposed for approval.",
-            "type": "string"
+            "type": "boolean"
           },
           "channelList": {
             "description": "List of channel Ids where the post will be created in.",
