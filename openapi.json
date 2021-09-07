@@ -2181,8 +2181,12 @@
             "items": {
               "type": "object",
               "properties": {
+                "primary": {
+                  "description": "Indicating the address to be used, when \"primary\" is 'true'. Only 1 \"primary\" address is read.",
+                  "type": "boolean"
+                },
                 "type": {
-                  "description": "Type of the address. Only 'work' address is read",
+                  "description": "Type of the address. Only 1 'work' address is read. When both \"type\" and \"primary\" present, \"primary\" is favoured.",
                   "type": "string",
                   "enum": [
                     "home",
