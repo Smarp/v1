@@ -928,7 +928,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "$ref": "#/components/schemas/GetClicksResponse"
+                  "$ref": "#/components/schemas/GetPostReadsResponse"
                 }
               }
             }
@@ -1860,7 +1860,7 @@
           }
         }
       },
-      "PostCreateResponse": {
+      "PostCreate": {
         "type": "object",
         "properties": {
           "id": {
@@ -1896,6 +1896,30 @@
             "type": "string"
           }
         }
+      },
+      "PostCreateResponse": {
+        "type": "object",
+        "properties": {
+          "meta": {
+            "type": "object",
+            "properties": {
+              "next": {
+                "type": "string",
+                "description": "Link to the next batch of results. Empty in case no more results could be fetched"
+              }
+            }
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PostCreate"
+            }
+          }
+        },
+        "required": [
+          "meta",
+          "data"
+        ]
       },
       "ShareItem": {
         "type": "object",

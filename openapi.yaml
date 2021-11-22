@@ -837,7 +837,7 @@ paths:
             application/json:
               schema:
                 type: object
-                $ref: '#/components/schemas/GetClicksResponse'
+                $ref: '#/components/schemas/GetPostReadsResponse'
         '400':
           description: Bad request
           content:
@@ -1451,7 +1451,7 @@ components:
           enum:
             - article
             - link
-    PostCreateResponse:
+    PostCreate:
       type: object
       properties:
         id:
@@ -1478,6 +1478,22 @@ components:
         language:
           description: Language of the post (detected by Smarp).
           type: string
+    PostCreateResponse:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            next:
+              type: string
+              description: Link to the next batch of results. Empty in case no more results could be fetched
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PostCreate'
+      required:
+        - meta
+        - data
     ShareItem:
       type: object
       properties:
