@@ -1821,15 +1821,6 @@ components:
               region:
                 description: Its value is used to assign a user to a Smarp Team.
                 type: string
-        'urn:ietf:params:scim:schemas:extension:enterprise:2.0:User:organization':
-          description: Its value is used to assign a user to a Smarp Team.
-          type: string
-        'urn:ietf:params:scim:schemas:extension:enterprise:2.0:User:division':
-          description: Its value is used to assign a user to a Smarp Team.
-          type: string
-        'urn:ietf:params:scim:schemas:extension:enterprise:2.0:User:department':
-          description: Its value is used to assign a user to a Smarp Team.
-          type: string
     SCIMUserPatch:
       type: object
       properties:
