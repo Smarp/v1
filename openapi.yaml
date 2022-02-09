@@ -226,6 +226,7 @@ tags:
       | postTitle   | string | Title of post                                                |
       | channelId   | string | ID of channel (which can be used to build a feed URL: {instance}.smarpshare.com/#/?type=published&channelId={channelId} that directs users to a channel on Smarp) |
       | channelName | string | Name of channel |
+      | imageUrlList| string[]  | An array containing image urls of the post |
 
       For example:
       ```
@@ -233,7 +234,8 @@ tags:
           "postId": "000011112222333344445550",
           "postTitle": "post title",
           "channelId": "000011112222333344445551",
-          "channelTitle": "channel name"
+          "channelTitle": "channel name",
+          "imageUrlList": ["https://image.url"]
         }
       ```
 paths:
